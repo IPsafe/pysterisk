@@ -1,4 +1,5 @@
-PyAGI
+Pysterisk
 =====
 
-A Asterisk AGI Python Lib
+A Pythonic Asterisk Lib
+Support Python2 and Python3
