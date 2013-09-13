@@ -1,5 +1,5 @@
-#!/usr/bin/python
-# encode: utf8
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 import os
 import sys
@@ -7,28 +7,34 @@ import datetime
 
 class Log(object):
 
-    def __init__(self):
-        open
+    def __init__(self, log_file):
+        self.log_path = log_file
 
     def log(self, text):
-        buff = '[LOG] %s' % text
-        print(buff)
+        open(self.log_path, 'ab+', 512).write(
+                "%s: %s\n" % (datetime.datetime.now(), text)
+        )
+
 
 class Agi(Log):
 
-    def __init__(self, socket=None):
+    def __init__(self, socket=None, debug=False, log_file='/tmp/pysterisk_agi.log'):
+        super(Agi, self).__init__(log_file)
         self.is_socket = socket
+        self.debug = debug
         self.env = {}
 
     def connect(self):
-        while(True):
-            line = sys.stdin.readline().strip()
-            if not line:
+        lines = sys.stdin.readlines()
+        for line in lines:
+            if not line.strip():
                 break
 
             key, data = line.split(':')
-            self.env[key.strip()] = data.strip()
-            log(self.env)
+            self.env[key.strip()] =  data.strip()
+
+        if self.debug:
+            self.log(self.env)
 
     def get(self):
         res = sys.stdin.readline()
