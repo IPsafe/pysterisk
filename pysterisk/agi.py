@@ -28,13 +28,13 @@ class AGI(Log):
         self._connect()
 
     def _connect(self):
-        lines = sys.stdin.readlines()
-        for line in lines:
-            if not line.strip():
+        while(True):
+            line = sys.stdin.readline().strip()
+            if not line:
                 break
 
             key, data = line.split(':')
-            self.env[key.strip()] =  data.strip()
+            self.env[key.strip()] = data.strip()
 
         if self.debug:
             self.log(self.env)
