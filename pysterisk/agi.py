@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import os
 import sys
 import datetime
 
 class Log(object):
+
 
     def __init__(self, log_file):
         self.log_path = log_file
@@ -16,15 +16,18 @@ class Log(object):
         )
 
 
-class Agi(Log):
+class AGI(Log):
 
-    def __init__(self, socket=None, debug=False, log_file='/tmp/pysterisk_agi.log'):
-        super(Agi, self).__init__(log_file)
+
+    def __init__(self, socket=None, debug=False,
+                    log_file='/tmp/pysterisk_agi.log'):
+        super(AGI, self).__init__(log_file)
         self.is_socket = socket
         self.debug = debug
         self.env = {}
+        self._connect()
 
-    def connect(self):
+    def _connect(self):
         lines = sys.stdin.readlines()
         for line in lines:
             if not line.strip():
@@ -36,16 +39,18 @@ class Agi(Log):
         if self.debug:
             self.log(self.env)
 
-    def get(self):
+    def _get(self):
         res = sys.stdin.readline()
-        sys.stdout.write(">>> %s\n" % res)
+        self.log(">>> %s\n" % res)
         return res
 
-    def send(self, text):
+    def _send(self, text):
         sys.stdout.write('%s\n' % text)
         sys.stdout.flush()
 
 
-    def cmd(self):
-        pass
+    def command(self, cmd, *args):
+        self._send('%s %s' % (cmd, ' '.join(map(str,args))))
+        return self._get()
+
 

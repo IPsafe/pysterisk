@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from pysterisk.agi import Agi
+from pysterisk.agi import AGI
 
-ast = Agi(debug=True, log_file='./basic.log')
-ast.connect()
-ast.send('SAY NUMBER 123')
+ast = AGI(debug=True)
+ast.command('ANSWER')
+ast.command('SAY NUMBER 123')
